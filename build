@@ -1,0 +1,38 @@
+#! /usr/bin/env zsh
+
+declare -a args=($@)
+
+function usage {
+  echo \
+    'Usage:' \
+    "\n" \
+    '-r|--repository|--repository= -- specify a repository (`sample` is the default)' \
+    "\n" \
+    '-t|--tag|--tag= -- specify a tag (`latest` is the default)' \
+    "\n" \
+    '-f|--dockerfile|--dockerfile= -- specify a Dockerfile (`Dockerfile` is the default)' \
+    "\n" \
+    '-h|--help -- display this message'
+}
+
+function main TRAPEXIT {
+  local -a options=(${args:0:-1})
+  local    workdir=${args[-1]}
+
+  local is_help_needed=${${options[(r)-h|--help]:+true}:-false}
+
+  [[ $is_help_needed == true ]] && usage && exit 1
+
+  local repository=${options[options[(i)-r|--repository] + 1]:-${${options[(r)--repository=*]#--repository=}:-sample}}
+  local tag=${options[options[(i)-t|--tag] + 1]:-${${options[(r)--tag=*]#--tag=}:-latest}}
+  local dockerfile=${options[options[(i)-f|--dockerfile] + 1]:-${${options[(r)--dockerfile=*]#--dockerfile=}:-$workdir/Dockerfile}}
+
+  local -a docker_options=(
+    --progress plain
+    --tag $repository:$tag
+    --file $dockerfile
+  )
+
+  docker image build $docker_options $workdir
+}
+

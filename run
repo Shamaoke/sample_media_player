@@ -1,0 +1,59 @@
+#! /usr/bin/env zsh
+
+declare -a args=($@)
+
+function usage {
+  echo \
+    'Usage:' \
+    "\n" \
+    '-r|--repository|--repository= -- specify a repository (`sample` is the default)' \
+    "\n" \
+    '-t|--tag|--tag= -- specify a tag (`latest` is the default)' \
+    "\n" \
+    '-i|--interactive -- run an interactive docker session' \
+    "\n" \
+    '-h|--help -- display this message'
+}
+
+function main TRAPEXIT {
+  local -a options=($args)
+
+  local is_help_needed=${${options[(r)-h|--help]:+true}:-false}
+
+  [[ $is_help_needed == true ]] && usage && exit 1
+
+  local is_interactive=${${options[(r)-i|--interactive]:+true}:-false}
+
+  local repository=${options[options[(i)-r|--repository] + 1]:-${${options[(r)--repository=*]#--repository=}:-sample}}
+  local tag=${options[options[(i)-t|--tag] + 1]:-${${options[(r)--tag=*]#--tag=}:-latest}}
+
+  local xauth=/tmp/.docker.xauth
+  local xsock=/tmp/.X11-unix
+
+  touch $xauth
+
+  xauth nlist $DISPLAY \
+    | sed --expression='s/^..../ffff/' \
+    | xauth -f $xauth nmerge -
+
+  local -a docker_options=(
+    --rm
+    --privileged
+    --env XAUTHORITY=$xauth
+    --env DISPLAY=$DISPLAY
+    --volume ${xsock}:${xsock}
+    --volume ${xauth}:${xauth}
+    --network host
+  )
+
+  case $is_interactive {
+    (false)
+      docker run $docker_options $repository:$tag &!
+    ;;
+    (true)
+      docker_options+=(--interactive --tty)
+      docker run $docker_options $repository:$tag sh
+    ;;
+  }
+}
+

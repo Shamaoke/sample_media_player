@@ -1,0 +1,54 @@
+
+###
+### ::: Sample media player | Arch dockefile :::
+###
+
+FROM archlinux:base as install
+
+RUN pacman -Syu --noconfirm
+
+RUN pacman -S --noconfirm cmake
+RUN pacman -S --noconfirm ninja
+RUN pacman -S --noconfirm gcc
+RUN pacman -S --noconfirm qt6-base
+RUN pacman -S --noconfirm qt6-declarative
+RUN pacman -S --noconfirm qt6-multimedia
+
+FROM install as build
+
+WORKDIR /build/source
+
+COPY . .
+
+WORKDIR /build
+
+RUN mkdir build
+RUN mkdir bin
+
+RUN cmake -G Ninja -S source -B build
+RUN cmake --build build
+
+FROM archlinux:base as production
+
+ENV XDG_RUNTIME_DIR="/tmp/runtime-root"
+
+RUN pacman -Syu --noconfirm
+
+RUN pacman -S --noconfirm qt6-base
+RUN pacman -S --noconfirm qt6-declarative
+RUN pacman -S --noconfirm qt6-multimedia
+RUN pacman -S --noconfirm libvdpau-va-gl
+
+RUN useradd --create-home sample_media_player
+
+USER sample_media_player
+
+WORKDIR /home/sample_media_player
+
+COPY ./sample.mp4 ./sample.mp4
+COPY --from=build /build/bin/sample_media_player ./sample_media_player
+
+RUN touch sample_media_player.log
+
+ENTRYPOINT ["/bin/sh", "-c", "/home/sample_media_player/sample_media_player 1>/home/sample_media_player/sample_media_player.log 2>/home/sample_media_player/sample_media_player.log"]
+

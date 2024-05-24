@@ -1,0 +1,56 @@
+
+##
+## ::: Sample media player | Debian dockerfile :::
+##
+
+FROM debian:12.5 as install
+
+RUN apt update
+
+RUN apt install --assume-yes ninja-build
+RUN apt install --assume-yes cmake
+RUN apt install --assume-yes g++
+RUN apt install --assume-yes qt6-base-dev
+RUN apt install --assume-yes qt6-declarative-dev
+RUN apt install --assume-yes qt6-multimedia-dev
+
+FROM install as build
+
+WORKDIR /build/source
+
+COPY . .
+
+WORKDIR /build
+
+RUN mkdir build
+RUN mkdir bin
+
+RUN cmake -G Ninja -S source -B build
+RUN cmake --build build
+
+FROM debian:12.5 as production
+
+ENV XDG_RUNTIME_DIR="/tmp/runtime-root"
+
+RUN apt update
+
+RUN apt install --assume-yes qt6-base-dev
+RUN apt install --assume-yes qt6-declarative-dev
+RUN apt install --assume-yes qt6-multimedia-dev
+RUN apt install --assume-yes qml6-module-qtquick
+RUN apt install --assume-yes qml6-module-qtquick-window
+RUN apt install --assume-yes qml6-module-qtmultimedia
+
+RUN useradd --create-home sample_media_player
+
+USER sample_media_player
+
+WORKDIR /home/sample_media_player
+
+COPY ./sample.mp4 ./sample.mp4
+COPY --from=build /build/bin/sample_media_player ./sample_media_player
+
+RUN touch sample_media_player.log
+
+ENTRYPOINT ["/bin/sh", "-c", "/home/sample_media_player/sample_media_player 1>/home/sample_media_player/sample_media_player.log 2>/home/sample_media_player/sample_media_player.log"]
+
