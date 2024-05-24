@@ -53,8 +53,9 @@ qt_add_qml_module(
 target_link_libraries(
   sample_player
 
-  PRIVATE
+  PUBLIC
     Qt::Multimedia
+    Qt::Qml
 )
 
 target_link_libraries(
@@ -64,7 +65,6 @@ target_link_libraries(
     Qt::Core
     Qt::Gui
     Qt::Qml
-    Qt::Multimedia
 
     sample_player_plugin
 )
