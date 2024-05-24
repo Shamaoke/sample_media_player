@@ -40,6 +40,7 @@ RUN apt install --assume-yes qt6-multimedia-dev
 RUN apt install --assume-yes qml6-module-qtquick
 RUN apt install --assume-yes qml6-module-qtquick-window
 RUN apt install --assume-yes qml6-module-qtmultimedia
+RUN apt install --assume-yes qml6-module-qtqml-workerscript
 
 RUN useradd --create-home sample_media_player
 
@@ -52,5 +53,5 @@ COPY --from=build /build/bin/sample_media_player ./sample_media_player
 
 RUN touch sample_media_player.log
 
-ENTRYPOINT ["/bin/sh", "-c", "/home/sample_media_player/sample_media_player 1>/home/sample_media_player/sample_media_player.log 2>/home/sample_media_player/sample_media_player.log"]
+# ENTRYPOINT ["/bin/sh", "-c", "/home/sample_media_player/sample_media_player 1>/home/sample_media_player/sample_media_player.log 2>/home/sample_media_player/sample_media_player.log"]
 
