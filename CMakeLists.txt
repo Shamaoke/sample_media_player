@@ -16,8 +16,8 @@ find_package(
   COMPONENTS
     Core
     Gui
-    Qml
     Multimedia
+    Qml
 )
 
 qt_standard_project_setup(REQUIRES 6.4)
