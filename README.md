@@ -9,9 +9,9 @@
 
 ## Run the docker images ##
 
-`./run -r sample -t arch`
+`./run -r sample_media_player -t arch`
 
-`./run -r sample -t debian`
+`./run -r sample_media_player -t debian`
 
 ## Environment ##
 
