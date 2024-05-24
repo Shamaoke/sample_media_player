@@ -5,7 +5,7 @@
 /// ::: SamplePlayer | Interface :::
 ///
 
-#include <QtMultimedia/QMediaPlayer>
+#include <QMediaPlayer>
 #include <QtQml>
 
 class SamplePlayer : public QMediaPlayer {
