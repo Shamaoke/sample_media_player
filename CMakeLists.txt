@@ -38,6 +38,7 @@ qt_add_qml_module(
     Main.qml
 )
 
+
 qt_add_qml_module(
   sample_player
   VERSION 1.0
@@ -48,6 +49,13 @@ qt_add_qml_module(
     sample_player.hpp
     sample_player.cpp
   STATIC
+)
+
+target_link_libraries(
+  sample_player
+
+  PRIVATE
+    Qt::Multimedia
 )
 
 target_link_libraries(
