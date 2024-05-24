@@ -42,6 +42,7 @@ qt_add_qml_module(
   sample_player
   VERSION 1.0
   URI SamplePlayer
+  RESOURCE_PREFIX "/"
   PLUGIN_TARGET sample_player_plugin
   OUTPUT_DIRECTORY SamplePlayer
   SOURCES
