@@ -38,7 +38,6 @@ qt_add_qml_module(
     Main.qml
 )
 
-
 qt_add_qml_module(
   sample_player
   VERSION 1.0
