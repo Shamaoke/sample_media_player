@@ -6,7 +6,7 @@ function usage {
   echo \
     'Usage:' \
     "\n" \
-    '-r|--repository|--repository= -- specify a repository (`sample` is the default)' \
+    '-r|--repository|--repository= -- specify a repository (`sample_media_player` is the default)' \
     "\n" \
     '-t|--tag|--tag= -- specify a tag (`latest` is the default)' \
     "\n" \
@@ -24,7 +24,7 @@ function main TRAPEXIT {
 
   local is_interactive=${${options[(r)-i|--interactive]:+true}:-false}
 
-  local repository=${options[options[(i)-r|--repository] + 1]:-${${options[(r)--repository=*]#--repository=}:-sample}}
+  local repository=${options[options[(i)-r|--repository] + 1]:-${${options[(r)--repository=*]#--repository=}:-sample_media_player}}
   local tag=${options[options[(i)-t|--tag] + 1]:-${${options[(r)--tag=*]#--tag=}:-latest}}
 
   local xauth=/tmp/.docker.xauth
