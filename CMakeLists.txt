@@ -29,6 +29,8 @@ set(
 
 add_executable(sample_media_player ${SOURCES})
 
+set_source_files_properties(Style.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+
 qt_add_qml_module(
   sample_media_player
   VERSION 1.0
@@ -51,6 +53,18 @@ qt_add_qml_module(
   STATIC
 )
 
+qt_add_qml_module(
+  styles
+  VERSION 1.0
+  URI Styles
+  RESOURCE_PREFIX "/"
+  PLUGIN_TARGET styles_plugin
+  OUTPUT_DIRECTORY Styles
+  QML_FILES
+    Style.qml
+  STATIC
+)
+
 target_link_libraries(
   sample_player
 
@@ -68,5 +82,6 @@ target_link_libraries(
     Qt::Qml
 
     sample_player_plugin
+    styles_plugin
 )
 
