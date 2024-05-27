@@ -9,12 +9,14 @@ import QtMultimedia
 
 import SamplePlayer
 
+import Styles
+
 Window {
 
-  width: 1280
-  height: 720
+  width: Style.windowWidth
+  height: Style.windowHeight
 
-  title: "SamplePlayer"
+  title: Style.windowTitle
 
   visible: true
 
