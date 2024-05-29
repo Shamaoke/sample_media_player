@@ -29,6 +29,10 @@ function main TRAPEXIT {
 
   local xauth=/tmp/.docker.xauth
   local xsock=/tmp/.X11-unix
+  local -A log=(
+    [source]="${HOME}/.development/${repository}/${repository}.log"
+    [destination]="/home/${repository}/${repository}.log"
+  )
 
   touch $xauth
 
@@ -43,6 +47,7 @@ function main TRAPEXIT {
     --env DISPLAY=$DISPLAY
     --volume ${xsock}:${xsock}
     --volume ${xauth}:${xauth}
+    --mount "type=bind,source=${log[source]},destination=${log[destination]}"
     --network host
   )
 
