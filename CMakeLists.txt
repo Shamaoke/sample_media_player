@@ -3,7 +3,7 @@
 ## ::: Sample media player | Build control file :::
 ##
 
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.25)
 
 project(sample_media_player VERSION 0.0.0 LANGUAGES CXX)
 
@@ -11,7 +11,7 @@ set(CMAKE_CXX_COMPILER /usr/bin/g++)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 
 find_package(
-  Qt6 6.7
+  Qt6 6.4
 
   COMPONENTS
     Core
@@ -20,7 +20,7 @@ find_package(
     Qml
 )
 
-qt_standard_project_setup(REQUIRES 6.7)
+qt_standard_project_setup(REQUIRES 6.4)
 
 set(
   SOURCES
@@ -35,6 +35,7 @@ qt_add_qml_module(
   sample_media_player
   VERSION 1.0
   URI Components
+  RESOURCE_PREFIX "/"
   QML_FILES
     Main.qml
 )
@@ -43,6 +44,7 @@ qt_add_qml_module(
   sample_player
   VERSION 1.0
   URI SamplePlayer
+  RESOURCE_PREFIX "/"
   PLUGIN_TARGET sample_player_plugin
   OUTPUT_DIRECTORY SamplePlayer
   SOURCES
@@ -55,6 +57,7 @@ qt_add_qml_module(
   styles
   VERSION 1.0
   URI Styles
+  RESOURCE_PREFIX "/"
   PLUGIN_TARGET styles_plugin
   OUTPUT_DIRECTORY Styles
   QML_FILES

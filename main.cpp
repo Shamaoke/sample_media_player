@@ -10,8 +10,9 @@ auto main(int argc, char* argv[ ], [[maybe_unused]] char* env[ ]) -> int {
 
   auto app { QGuiApplication { argc, argv, } };
   auto engine { QQmlApplicationEngine { } };
-  // auto window { QUrl { "qrc:/Components/Main.qml" } };
-  auto window { QUrl { "qrc:/qt/qml/Components/Main.qml" } };
+  auto window { QUrl { "qrc:/Components/Main.qml" } };
+
+  engine.addImportPath("qrc:/");
 
   engine.load(window);
 
