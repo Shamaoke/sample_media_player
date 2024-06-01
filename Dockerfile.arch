@@ -51,5 +51,7 @@ RUN touch sample_media_player.log
 ENV XDG_RUNTIME_DIR="/tmp/runtime-root"
 # ENV QML_IMPORT_TRACE=1
 
+FROM production as run
+
 ENTRYPOINT ["/bin/sh", "-c", "/home/sample_media_player/sample_media_player 1>/home/sample_media_player/sample_media_player.log 2>/home/sample_media_player/sample_media_player.log"]
 
