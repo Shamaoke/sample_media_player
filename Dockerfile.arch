@@ -5,6 +5,14 @@
 
 FROM archlinux:base as install
 
+COPY ./mirrorlist /etc/pacman.d/mirrorlist
+
+RUN pacman -Syy
+
+RUN pacman-key --init
+
+RUN pacman -S --noconfirm archlinux-keyring
+
 RUN pacman -Syu --noconfirm
 
 RUN pacman -S --noconfirm cmake
@@ -29,6 +37,14 @@ RUN cmake -G Ninja -S source -B build
 RUN cmake --build build
 
 FROM archlinux:base as production
+
+COPY ./mirrorlist /etc/pacman.d/mirrorlist
+
+RUN pacman -Syy
+
+RUN pacman-key --init
+
+RUN pacman -S --noconfirm archlinux-keyring
 
 RUN pacman -Syu --noconfirm
 
