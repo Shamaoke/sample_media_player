@@ -52,6 +52,8 @@ RUN pacman -S --noconfirm qt6-base
 RUN pacman -S --noconfirm qt6-declarative
 RUN pacman -S --noconfirm qt6-multimedia
 RUN pacman -S --noconfirm libvdpau-va-gl
+RUN pacman -S --noconfirm qt6-multimedia-gstreamer
+RUN pacman -S --noconfirm gst-plugins-bad
 
 RUN useradd --create-home sample_media_player
 
@@ -66,6 +68,7 @@ RUN touch sample_media_player.log
 
 ENV XDG_RUNTIME_DIR="/tmp/runtime-root"
 # ENV QML_IMPORT_TRACE=1
+ENV QT_MEDIA_BACKEND=gstreamer
 
 FROM production as run
 
